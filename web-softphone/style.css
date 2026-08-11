@@ -1,0 +1,791 @@
+/* CSS Variables for easy customization */
+:root {
+    --primary-color: #4CAF50;
+    --primary-dark: #388E3C;
+    --danger-color: #f44336;
+    --danger-dark: #d32f2f;
+    --secondary-color: #2196F3;
+    --background-color: #f5f5f5;
+    --surface-color: #ffffff;
+    --text-primary: #212121;
+    --text-secondary: #757575;
+    --border-color: #e0e0e0;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --transition: all 0.2s ease;
+}
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: var(--background-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* App Container */
+.app-container {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: var(--surface-color);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Screen Management */
+.screen {
+    display: none;
+    height: 100vh;
+    flex-direction: column;
+    animation: fadeIn 0.3s ease;
+}
+
+.screen.active {
+    display: flex;
+}
+
+.screen.hidden {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Login Screen */
+#login-screen {
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+}
+
+.login-box {
+    background: var(--surface-color);
+    padding: 32px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-box h1 {
+    text-align: center;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="url"] {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    transition: var(--transition);
+    background: var(--surface-color);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+    width: 100%;
+    padding: 14px 24px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 12px;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+}
+
+.btn-primary:disabled {
+    background: var(--text-secondary);
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: var(--background-color);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background: var(--border-color);
+}
+
+.btn-danger {
+    background: var(--danger-color);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: var(--danger-dark);
+}
+
+.status-message {
+    margin-top: 16px;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    font-size: 14px;
+    display: none;
+}
+
+.status-message.error {
+    display: block;
+    background: #ffebee;
+    color: var(--danger-color);
+}
+
+.status-message.success {
+    display: block;
+    background: #e8f5e9;
+    color: var(--primary-color);
+}
+
+/* Phone Screen Header */
+.phone-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+}
+
+.header-left,
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-center h1 {
+    font-size: 20px;
+    color: var(--text-primary);
+}
+
+.status-indicator {
+    font-size: 12px;
+}
+
+.status-indicator.registered {
+    color: var(--primary-color);
+}
+
+.status-indicator.connecting {
+    color: var(--secondary-color);
+}
+
+.status-indicator.disconnected {
+    color: var(--text-secondary);
+}
+
+#status-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* Icon Button */
+.icon-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+    color: var(--text-primary);
+}
+
+.icon-btn:hover {
+    background: var(--background-color);
+}
+
+.icon-btn.small {
+    font-size: 16px;
+    padding: 6px;
+}
+
+/* Phone Main Content */
+.phone-main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+/* Number Display */
+.number-display-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.number-display {
+    flex: 1;
+    padding: 16px 20px;
+    font-size: 28px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    background: var(--background-color);
+    font-family: 'SF Mono', Monaco, monospace;
+    letter-spacing: 1px;
+}
+
+/* Dialpad */
+.dialpad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.dial-btn {
+    aspect-ratio: 1;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: var(--transition);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.dial-btn:active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    transform: scale(0.95);
+}
+
+.digit {
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.letters {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}
+
+/* Call Button */
+.call-btn {
+    width: 100%;
+    padding: 18px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.call-btn:hover {
+    background: var(--primary-dark);
+}
+
+.call-btn:active {
+    transform: scale(0.98);
+}
+
+/* Recent Calls Section */
+#recent-section h2 {
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.calls-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.call-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.call-item:hover {
+    background: var(--background-color);
+}
+
+.call-item .call-icon {
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.call-item .call-icon.incoming { color: var(--primary-color); }
+.call-item .call-icon.outgoing { color: var(--secondary-color); }
+.call-item .call-icon.missed { color: var(--danger-color); }
+
+.call-item .call-info {
+    flex: 1;
+}
+
+.call-item .call-number {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.call-item .call-date {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.call-item .call-duration {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* Phone Navigation */
+.phone-nav {
+    display: flex;
+    background: var(--surface-color);
+    border-top: 1px solid var(--border-color);
+    padding: 8px 16px;
+}
+
+.nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+    color: var(--text-secondary);
+}
+
+.nav-btn.active {
+    color: var(--primary-color);
+    background: rgba(76, 175, 80, 0.1);
+}
+
+.nav-icon {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.nav-label {
+    font-size: 12px;
+}
+
+/* Call Screen */
+.call-header {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    background: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.call-header h1 {
+    flex: 1;
+    text-align: center;
+    font-size: 18px;
+    color: var(--text-primary);
+}
+
+.spacer {
+    width: 40px;
+}
+
+.call-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    background: linear-gradient(180deg, var(--primary-color) 0%, var(--background-color) 100%);
+}
+
+.call-info {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.call-number {
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.call-timer {
+    font-size: 18px;
+    color: var(--text-secondary);
+    font-family: 'SF Mono', Monaco, monospace;
+}
+
+.call-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.control-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    background: var(--surface-color);
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+}
+
+.control-btn:active {
+    transform: scale(0.95);
+}
+
+.control-btn.active {
+    background: var(--text-primary);
+    color: white;
+}
+
+.control-icon {
+    font-size: 28px;
+    margin-bottom: 4px;
+}
+
+.control-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.control-btn.active .control-label {
+    color: var(--text-secondary);
+}
+
+/* DTMF Pad */
+.dtmf-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.dtmf-btn {
+    padding: 20px;
+    background: var(--surface-color);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 24px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+}
+
+.dtmf-btn:active {
+    background: var(--primary-color);
+    color: white;
+    transform: scale(0.95);
+}
+
+.end-call-btn {
+    padding: 20px 60px;
+    background: var(--danger-color);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-lg);
+}
+
+.end-call-btn:hover {
+    background: var(--danger-dark);
+}
+
+.end-call-btn:active {
+    transform: scale(0.95);
+}
+
+/* Incoming Call Screen */
+#incoming-screen {
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+}
+
+.incoming-call-box {
+    text-align: center;
+    padding: 40px;
+    background: var(--surface-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    max-width: 400px;
+    width: 90%;
+}
+
+.caller-avatar {
+    font-size: 80px;
+    margin-bottom: 16px;
+}
+
+.incoming-call-box h2 {
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.incoming-number {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.incoming-timer {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+    font-family: 'SF Mono', Monaco, monospace;
+}
+
+.incoming-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 40px;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    gap: 8px;
+}
+
+.action-btn .action-icon {
+    font-size: 32px;
+}
+
+.action-btn.reject {
+    background: var(--danger-color);
+    color: white;
+}
+
+.action-btn.reject:hover {
+    background: var(--danger-dark);
+}
+
+.action-btn.accept {
+    background: var(--primary-color);
+    color: white;
+}
+
+.action-btn.accept:hover {
+    background: var(--primary-dark);
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    position: relative;
+    background: var(--surface-color);
+    border-radius: var(--radius);
+    padding: 24px;
+    max-width: 400px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.modal-header h2 {
+    color: var(--text-primary);
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .login-box {
+        padding: 24px;
+    }
+    
+    .dial-btn {
+        aspect-ratio: 0.9;
+    }
+    
+    .digit {
+        font-size: 24px;
+    }
+    
+    .call-number {
+        font-size: 28px;
+    }
+    
+    .incoming-actions {
+        flex-direction: column;
+    }
+    
+    .action-btn {
+        width: 100%;
+    }
+}
+
+/* Touch-friendly adjustments */
+@media (hover: none) and (pointer: coarse) {
+    .dial-btn,
+    .dtmf-btn,
+    .control-btn,
+    .nav-btn {
+        min-height: 60px;
+    }
+    
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger {
+        min-height: 50px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .app-container {
+        display: none;
+    }
+}
