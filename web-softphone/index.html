@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Web SoftPhone</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- SIP.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sip.js@0.21.2/dist/sip.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Login Screen -->
+        <div id="login-screen" class="screen active">
+            <div class="login-box">
+                <h1>📞 SoftPhone</h1>
+                <p class="subtitle">SIP WebRTC Client</p>
+                
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="sip-username">SIP Username</label>
+                        <input type="text" id="sip-username" placeholder="e.g., 1001" autocomplete="username">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sip-password">SIP Password</label>
+                        <input type="password" id="sip-password" placeholder="********" autocomplete="current-password">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sip-domain">SIP Server / Domain</label>
+                        <input type="text" id="sip-domain" placeholder="pbx.example.com" autocomplete="off">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ws-url">WebSocket URL</label>
+                        <input type="url" id="ws-url" placeholder="wss://pbx.example.com/ws" autocomplete="off">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="display-name">Display Name (Optional)</label>
+                        <input type="text" id="display-name" placeholder="Your Name" autocomplete="off">
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="auto-reconnect" checked>
+                            Auto Reconnect
+                        </label>
+                    </div>
+                    
+                    <button type="submit" id="connect-btn" class="btn-primary">
+                        Connect
+                    </button>
+                    
+                    <div id="login-status" class="status-message"></div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Main Phone Screen -->
+        <div id="phone-screen" class="screen">
+            <header class="phone-header">
+                <div class="header-left">
+                    <button id="settings-btn" class="icon-btn" title="Settings">⚙️</button>
+                </div>
+                <div class="header-center">
+                    <h1>SoftPhone</h1>
+                </div>
+                <div class="header-right">
+                    <span id="registration-status" class="status-indicator disconnected">●</span>
+                    <span id="status-text">Disconnected</span>
+                </div>
+            </header>
+            
+            <main class="phone-main">
+                <!-- Dialer Section -->
+                <div id="dialer-section">
+                    <div class="number-display-container">
+                        <input type="text" id="number-display" class="number-display" placeholder="Enter number..." readonly>
+                        <button id="clear-btn" class="icon-btn small" title="Clear">✕</button>
+                        <button id="backspace-btn" class="icon-btn small" title="Backspace">⌫</button>
+                    </div>
+                    
+                    <div class="dialpad">
+                        <button class="dial-btn" data-digit="1">
+                            <span class="digit">1</span>
+                            <span class="letters">&nbsp;</span>
+                        </button>
+                        <button class="dial-btn" data-digit="2">
+                            <span class="digit">2</span>
+                            <span class="letters">ABC</span>
+                        </button>
+                        <button class="dial-btn" data-digit="3">
+                            <span class="digit">3</span>
+                            <span class="letters">DEF</span>
+                        </button>
+                        <button class="dial-btn" data-digit="4">
+                            <span class="digit">4</span>
+                            <span class="letters">GHI</span>
+                        </button>
+                        <button class="dial-btn" data-digit="5">
+                            <span class="digit">5</span>
+                            <span class="letters">JKL</span>
+                        </button>
+                        <button class="dial-btn" data-digit="6">
+                            <span class="digit">6</span>
+                            <span class="letters">MNO</span>
+                        </button>
+                        <button class="dial-btn" data-digit="7">
+                            <span class="digit">7</span>
+                            <span class="letters">PQRS</span>
+                        </button>
+                        <button class="dial-btn" data-digit="8">
+                            <span class="digit">8</span>
+                            <span class="letters">TUV</span>
+                        </button>
+                        <button class="dial-btn" data-digit="9">
+                            <span class="digit">9</span>
+                            <span class="letters">WXYZ</span>
+                        </button>
+                        <button class="dial-btn" data-digit="*">
+                            <span class="digit">*</span>
+                            <span class="letters">&nbsp;</span>
+                        </button>
+                        <button class="dial-btn" data-digit="0">
+                            <span class="digit">0</span>
+                            <span class="letters">+</span>
+                        </button>
+                        <button class="dial-btn" data-digit="#">
+                            <span class="digit">#</span>
+                            <span class="letters">&nbsp;</span>
+                        </button>
+                    </div>
+                    
+                    <button id="call-btn" class="call-btn">
+                        📞 Call
+                    </button>
+                </div>
+                
+                <!-- Recent Calls Section -->
+                <div id="recent-section" class="hidden">
+                    <h2>Recent Calls</h2>
+                    <div id="recent-calls-list" class="calls-list">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                    <button id="clear-history-btn" class="btn-secondary">Clear History</button>
+                </div>
+            </main>
+            
+            <nav class="phone-nav">
+                <button class="nav-btn active" data-view="dialer">
+                    <span class="nav-icon">📞</span>
+                    <span class="nav-label">Dialer</span>
+                </button>
+                <button class="nav-btn" data-view="recent">
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-label">Recent</span>
+                </button>
+            </nav>
+        </div>
+        
+        <!-- Active Call Screen -->
+        <div id="call-screen" class="screen hidden">
+            <header class="call-header">
+                <button id="call-back-btn" class="icon-btn" title="Back">←</button>
+                <h1 id="call-status">Calling...</h1>
+                <div class="spacer"></div>
+            </header>
+            
+            <main class="call-main">
+                <div class="call-info">
+                    <div id="call-number" class="call-number">---</div>
+                    <div id="call-timer" class="call-timer">00:00</div>
+                </div>
+                
+                <div class="call-controls">
+                    <button id="mute-btn" class="control-btn" title="Mute">
+                        <span class="control-icon">🎤</span>
+                        <span class="control-label">Mute</span>
+                    </button>
+                    <button id="speaker-btn" class="control-btn" title="Speaker">
+                        <span class="control-icon">🔊</span>
+                        <span class="control-label">Speaker</span>
+                    </button>
+                    <button id="dtmf-toggle-btn" class="control-btn" title="Keypad">
+                        <span class="control-icon">🔢</span>
+                        <span class="control-label">Keypad</span>
+                    </button>
+                </div>
+                
+                <div id="dtmf-pad" class="dtmf-pad hidden">
+                    <button class="dtmf-btn" data-digit="1">1</button>
+                    <button class="dtmf-btn" data-digit="2">2</button>
+                    <button class="dtmf-btn" data-digit="3">3</button>
+                    <button class="dtmf-btn" data-digit="4">4</button>
+                    <button class="dtmf-btn" data-digit="5">5</button>
+                    <button class="dtmf-btn" data-digit="6">6</button>
+                    <button class="dtmf-btn" data-digit="7">7</button>
+                    <button class="dtmf-btn" data-digit="8">8</button>
+                    <button class="dtmf-btn" data-digit="9">9</button>
+                    <button class="dtmf-btn" data-digit="*">*</button>
+                    <button class="dtmf-btn" data-digit="0">0</button>
+                    <button class="dtmf-btn" data-digit="#">#</button>
+                </div>
+                
+                <button id="end-call-btn" class="end-call-btn">
+                    📞 End Call
+                </button>
+            </main>
+        </div>
+        
+        <!-- Incoming Call Screen -->
+        <div id="incoming-screen" class="screen hidden">
+            <div class="incoming-call-box">
+                <div class="caller-avatar">👤</div>
+                <h2>Incoming Call</h2>
+                <div id="incoming-number" class="incoming-number">---</div>
+                <div id="incoming-timer" class="incoming-timer"></div>
+                
+                <div class="incoming-actions">
+                    <button id="reject-call-btn" class="action-btn reject">
+                        <span class="action-icon">📞</span>
+                        <span>Reject</span>
+                    </button>
+                    <button id="accept-call-btn" class="action-btn accept">
+                        <span class="action-icon">📞</span>
+                        <span>Accept</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal hidden">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <header class="modal-header">
+                    <h2>Settings</h2>
+                    <button id="close-settings-btn" class="icon-btn">✕</button>
+                </header>
+                
+                <form id="settings-form">
+                    <div class="form-group">
+                        <label for="set-sip-username">SIP Username</label>
+                        <input type="text" id="set-sip-username" autocomplete="username">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="set-sip-password">SIP Password</label>
+                        <input type="password" id="set-sip-password" autocomplete="current-password">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="set-sip-domain">SIP Domain</label>
+                        <input type="text" id="set-sip-domain" autocomplete="off">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="set-ws-url">WebSocket URL</label>
+                        <input type="url" id="set-ws-url" autocomplete="off">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="set-display-name">Display Name</label>
+                        <input type="text" id="set-display-name" autocomplete="off">
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="set-auto-reconnect">
+                            Auto Reconnect
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Save Settings</button>
+                    <button type="button" id="logout-btn" class="btn-danger">Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Hidden audio element for remote audio -->
+    <audio id="remote-audio" autoplay></audio>
+    
+    <!-- Ringtone audio -->
+    <audio id="ringtone" loop>
+        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=">
+    </audio>
+    
+    <script src="sip.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
